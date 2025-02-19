@@ -11,8 +11,6 @@ public class Main {
         }
         int c;
         Scanner scaner = new Scanner(System.in);
-        while(scaner.hasNext()){
 
-        }
     }
 }
