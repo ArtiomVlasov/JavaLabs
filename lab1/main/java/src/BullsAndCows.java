@@ -1,59 +1,116 @@
 package src;
-import java.util.Scanner;
 
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.logging.*;
+/**
+ *  Game class, provides all mechanics of "Bulls and Cows"
+ */
 public class BullsAndCows{
+    private static final Logger logger = GameLogs.setupLogger(BullsAndCows.class.getName());
     private int[] secretNum;
-    private int maxAttempts = 10;
+    final int maxAttempts = 10;
+    final int TimeToAttempt = 10; //??
+
+    /**
+     * setter to secret number
+     * @param num
+     */
+
+    public void setSecretNum(int[] num){
+        secretNum = num;
+        logger.info("Установлено секретное число: " + Arrays.toString(num));
+    }
+
+    /**
+     * Initialize the start game.
+     * Make number generator.
+     * Validate data from input.
+     * Compare input data with secret number.
+     */
 
     public void start(){
         NumberGenerator numberGenerator = new NumberGenerator();
         Scanner scanner = new Scanner(System.in);
-        int numsAmount;
+        System.out.println("Введите количество цифр для отгадывания от 3 до 6: ");
+        int numsAmount = -1;
         do {
-            System.out.println("Введите количество цифр для отгадывания от 3 до 6: ");
-            numsAmount = scanner.nextInt();
+            if(scanner.hasNextInt()){
+                numsAmount = scanner.nextInt();
+                scanner.nextLine();
+                logger.info("Игрок выбрал длину числа: " + numsAmount);
+            }
+            else {
+                scanner.next();
+                logger.warning("Игрок ввел некорректное значение");
+                System.out.println("Не число! Введите число от 3 до 6");
+
+            }
         }while (numsAmount>6 || numsAmount < 3);
         secretNum = numberGenerator.generateNumber(numsAmount);
+        logger.info("Секретное число сгенерировано: " + Arrays.toString(secretNum));
         int attempts = 0;
 
         while (attempts < maxAttempts) {
             System.out.print("Введите число: ");
             String guessStr = scanner.nextLine();
-            if (!Validator.isValid(guessStr, numsAmount)) {
-                System.out.println("Некорректный ввод. Убедитесь, что число состоит из " +numsAmount + " уникальных цифр.");
-                continue;
-            }
-            int[] guess = Validator.parseInput(guessStr);
-            Result result = checkGuess(secretNum, guess);
-            System.out.println("Быки: " + result.getBulls() + ", Коровы: " + result.getCows());
+            try{
+                int[] guess  = Validator.parseInput(guessStr, numsAmount);
+                logger.info("Игрок ввел: " + guessStr);
+                Result result = checkGuess(guess);
+                System.out.println("Быки: " + result.getBulls() + ", Коровы: " + result.getCows());
 
-            if (result.getBulls() == 4) {
-                System.out.println("Поздравляем! Вы угадали число!");
-                break;
+                if (result.getBulls() == numsAmount) {
+                    System.out.println("Поздравляем! Вы угадали число!");
+                    logger.info("Игрок угадал число");
+                    break;
+                }
+                attempts++;
             }
-
-            attempts++;
+            catch (IllegalArgumentException e) {
+                System.out.println("Ошибка ввода: " + e.getMessage());
+                logger.warning("Ошибка ввода: " + e.getMessage());
+            }
         }
 
         if (attempts == maxAttempts) {
-            System.out.println("Вы исчерпали попытки. Загаданное число: " + secretNum);
+            System.out.print("Вы исчерпали попытки. Загаданное число: ");
+            for (int i = 0; i < numsAmount; i++) {
+                System.out.print(secretNum[i]);
+            }
+            logger.info("Игрок исчерпал попытки. Секретное число: " + Arrays.toString(secretNum));
+
         }
     }
 
-    private Result checkGuess(int[] secret, int[] guess) {
+    /**
+     * Compare your sequence numbers and secret sequence numbers
+     * @param guess your sequence numbers
+     * @return How many Bulls, how many cows
+     */
+
+    final public Result checkGuess(int[] guess) {
         int bulls = 0, cows = 0;
 
-        for (int i = 0; i < secret.length; i++) {
-            if (secret[i] == guess[i]) {
+        for (int i = 0; i < secretNum.length; i++) {
+            if (secretNum[i] == guess[i]) {
                 bulls++;
-            } else if (contains(secret, guess[i])) {
+            } else if (contains(secretNum, guess[i])) {
                 cows++;
             }
         }
 
         return new Result(bulls, cows);
     }
-    private boolean contains(int[] array, int value) {
+
+    /**
+     *Check contains guess number in secret sequence numbers
+     * @param array secret number
+     * @param value your guess number
+     * @return true - contains, false - not contains
+     */
+
+    final public boolean contains(int[] array, int value) {
         for (int num : array) {
             if (num == value) {
                 return true;
