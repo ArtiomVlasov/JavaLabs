@@ -4,46 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d13db1be-7dcf-412b-940e-426db1829cc0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/LAB1/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LAB1/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LAB1/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaLabs.userlibraries" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/JavaLabs.userlibraries" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/game_logs.log" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1/game_logs.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/lab1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1/lab1.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/main/java/src/BullsAndCows.java" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1/main/java/src/BullsAndCows.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/main/java/src/GameLogs.java" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1/main/java/src/GameLogs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/main/java/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1/main/java/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/main/java/src/NumberGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1/main/java/src/NumberGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/main/java/src/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1/main/java/src/Result.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/main/java/src/Validator.java" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1/main/java/src/Validator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/main/main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1/main/main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1/test/java/src/BullsAndCowsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/lab1/test/java/src/BullsAndCowsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/src/BullsAndCows.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/out/production/main/src/BullsAndCows.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/src/GameLogs.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/out/production/main/src/GameLogs.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/src/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/out/production/main/src/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/src/NumberGenerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/out/production/main/src/NumberGenerator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/src/Result.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/out/production/main/src/Result.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/main/src/Validator.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/out/production/main/src/Validator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/lab1/src/java/BullsAndCowsTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/out/test/lab1/src/java/BullsAndCowsTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/src/BullsAndCows.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/target/classes/src/BullsAndCows.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/src/GameLogs.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/target/classes/src/GameLogs.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/src/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/target/classes/src/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/src/NumberGenerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/target/classes/src/NumberGenerator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/src/Result.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/target/classes/src/Result.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/src/Validator.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/target/classes/src/Validator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/lab1-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/target/lab1-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/src/BullsAndCowsTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/LAB1/target/test-classes/src/BullsAndCowsTest.class" afterDir="false" />
-    </list>
+    <list default="true" id="d13db1be-7dcf-412b-940e-426db1829cc0" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
