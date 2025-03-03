@@ -232,3 +232,15 @@ Mar 03, 2025 3:53:40 PM src.BullsAndCows start
 WARNING: Ошибка ввода: Ввод содержит повторяющиеся цифры
 Mar 03, 2025 3:53:42 PM src.BullsAndCows start
 INFO: Игрок ввел: 134
+Mar 03, 2025 4:04:08 PM src.BullsAndCows start
+INFO: Игрок выбрал длину числа: 3
+Mar 03, 2025 4:04:08 PM src.BullsAndCows start
+INFO: Секретное число сгенерировано: [5, 8, 6]
+Mar 03, 2025 4:04:10 PM src.BullsAndCows start
+INFO: Игрок ввел: 123
+Mar 03, 2025 4:24:32 PM src.BullsAndCows start
+INFO: Игрок выбрал длину числа: 3
+Mar 03, 2025 4:24:32 PM src.BullsAndCows start
+INFO: Секретное число сгенерировано: [4, 6, 1]
+Mar 03, 2025 4:24:34 PM src.BullsAndCows start
+INFO: Игрок ввел: 123

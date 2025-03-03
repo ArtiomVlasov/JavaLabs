@@ -25,7 +25,7 @@ public class GameLogs {
 
         try {
             // Set up a file handler
-            FileHandler fileHandler = new FileHandler("/home/archi/IdeaProjects/JavaLabs/lab1/game_logs.log", true);
+            FileHandler fileHandler = new FileHandler("/home/archi/IdeaProjects/JavaLabs/LAB1/lab1/game_logs.log", true);
             fileHandler.setLevel(Level.ALL);
             fileHandler.setFormatter(new SimpleFormatter());
             logger.addHandler(fileHandler);
