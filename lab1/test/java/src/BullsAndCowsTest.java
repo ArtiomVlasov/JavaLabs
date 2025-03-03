@@ -1,4 +1,4 @@
-package src.java;
+package src;
 
 import junit.framework.TestCase;
 import src.BullsAndCows;
