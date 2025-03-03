@@ -162,3 +162,35 @@ Mar 02, 2025 3:13:26 PM src.BullsAndCows start
 INFO: Секретное число сгенерировано: [6, 3, 5]
 Mar 02, 2025 3:13:36 PM src.BullsAndCows start
 INFO: Время вышло. Игра завершена.
+Mar 03, 2025 2:12:14 PM src.BullsAndCows start
+INFO: Игрок выбрал длину числа: 3
+Mar 03, 2025 2:12:14 PM src.BullsAndCows start
+INFO: Секретное число сгенерировано: [6, 2, 4]
+Mar 03, 2025 2:12:16 PM src.BullsAndCows start
+INFO: Игрок ввел: 123
+Mar 03, 2025 2:12:18 PM src.BullsAndCows start
+INFO: Игрок ввел: 213
+Mar 03, 2025 2:12:28 PM src.BullsAndCows start
+INFO: Время вышло. Игра завершена.
+Mar 03, 2025 2:12:43 PM src.BullsAndCows start
+INFO: Игрок выбрал длину числа: 3
+Mar 03, 2025 2:12:44 PM src.BullsAndCows start
+INFO: Секретное число сгенерировано: [7, 1, 9]
+Mar 03, 2025 2:12:53 PM src.BullsAndCows start
+WARNING: Ошибка ввода: Длина вашего числа не соответствует длине угадываемого
+Mar 03, 2025 2:12:54 PM src.BullsAndCows start
+INFO: Игрок ввел: 123
+Mar 03, 2025 2:13:00 PM src.BullsAndCows start
+WARNING: Ошибка ввода: Длина вашего числа не соответствует длине угадываемого
+Mar 03, 2025 2:13:01 PM src.BullsAndCows start
+INFO: Игрок ввел: 123
+Mar 03, 2025 2:13:06 PM src.BullsAndCows start
+INFO: Игрок ввел: 719
+Mar 03, 2025 2:13:06 PM src.BullsAndCows start
+INFO: Игрок угадал число
+Mar 03, 2025 2:17:11 PM src.BullsAndCows setSecretNum
+INFO: Установлено секретное число: [1, 2, 3, 4]
+Mar 03, 2025 2:17:11 PM src.BullsAndCows setSecretNum
+INFO: Установлено секретное число: [1, 2, 3, 4]
+Mar 03, 2025 2:17:11 PM src.BullsAndCows setSecretNum
+INFO: Установлено секретное число: [1, 2, 3, 4]
