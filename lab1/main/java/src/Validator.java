@@ -10,9 +10,9 @@ public class Validator {
      * @param input user input line
      * @param numsAmount number of digits
      * @return parsed String to int[]
-     * @throws IllegalArgumentException Если длина строки не соответствует
-     *         требуемой, если строка содержит недопустимые символы
-     *         (например, не цифры или цифру 0), или если встречаются повторяющиеся цифры.
+     * @throws IllegalArgumentException If the string length does not meet the requirement,
+     *                                  if the string contains invalid characters (for example, no digits or the digit 0),
+     *                                  or if duplicate digits are encountered.
      */
     public static int[] parseInput(String input, int numsAmount) {
         if (input.length() != numsAmount){

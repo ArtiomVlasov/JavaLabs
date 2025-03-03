@@ -1,5 +1,8 @@
 package src;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.*;
@@ -10,7 +13,7 @@ public class BullsAndCows{
     private static final Logger logger = GameLogs.setupLogger(BullsAndCows.class.getName());
     private int[] secretNum;
     final int maxAttempts = 10;
-    final int TimeToAttempt = 10; //??
+    final int TimeToAttempt = 10000; //??
 
     /**
      * setter to secret number
@@ -31,6 +34,7 @@ public class BullsAndCows{
 
     public void start(){
         NumberGenerator numberGenerator = new NumberGenerator();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите количество цифр для отгадывания от 3 до 6: ");
         int numsAmount = -1;
@@ -52,8 +56,25 @@ public class BullsAndCows{
         int attempts = 0;
 
         while (attempts < maxAttempts) {
+            String guessStr = "342";
             System.out.print("Введите число: ");
-            String guessStr = scanner.nextLine();
+            long startTime = System.currentTimeMillis();
+            try{
+                while(System.currentTimeMillis() - startTime < TimeToAttempt){
+                    if(reader.ready()){
+                        guessStr = reader.readLine();
+                        break;
+                    }
+                }
+                if (System.currentTimeMillis() - startTime >= TimeToAttempt) {
+                    System.out.println("\nВремя вышло. Игра завершена.");
+                    logger.info("Время вышло. Игра завершена.");
+                    System.exit(0);
+                }
+            }catch (IOException e){
+                System.err.println("Failed to read data from  buffer: " + e.getMessage());
+            }
+
             try{
                 int[] guess  = Validator.parseInput(guessStr, numsAmount);
                 logger.info("Игрок ввел: " + guessStr);

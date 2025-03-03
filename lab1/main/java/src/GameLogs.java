@@ -34,13 +34,14 @@ public class GameLogs {
         }
 
         // Add a console handler for immediate feedback
-        ConsoleHandler consoleHandler = new ConsoleHandler();
+        /*ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setLevel(Level.ALL);
         consoleHandler.setFormatter(new SimpleFormatter());
         logger.addHandler(consoleHandler);
-
+        */
+        logger.setUseParentHandlers(false);
         // Set the logger level
-        logger.setLevel(Level.ALL);
+
 
         return logger;
     }
