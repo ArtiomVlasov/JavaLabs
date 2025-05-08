@@ -1,0 +1,9 @@
+DEFINE=java.src.commandsDefineCommand
+PUSH=java.src.commandsPushCommand
+ADD=java.src.commandsAddCommand
+SUBTRACT=java.src.commandsSubtractCommand
+MULTIPLY=java.src.commandsMultiplyCommand
+DIVIDE=java.src.commandsDivideCommand
+PRINT=java.src.commandsPrintCommand
+SQRT=java.src.commandsSqrtCommand
+POP=java.src.commandsPopCommand
