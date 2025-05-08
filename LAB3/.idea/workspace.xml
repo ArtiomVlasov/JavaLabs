@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1e58f3cf-bd16-4cc0-af7e-43cfb2344257" name="Changes" comment="add pom.xml">
+      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB2/src/resources/commandsConfig.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/CarPart/Accessory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/CarPart/BodyPart.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/CarPart/CarParts.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/CarPart/Engine.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/car/CarModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/config/ConfigReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/controller/Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/dealer/Dealer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/exeptions/FactoryException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/exeptions/InvalidConfigException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/exeptions/InvalidThreadPoolSizeException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/factoryGui/FactoryView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/storage/Storage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/supplier/Supplier.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/workers/ThreadPool.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/java/fabrika/workers/Worker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/resources/META-INF/maven/archetype.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/resources/archetype-resources/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/resources/archetype-resources/src/main/java/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/resources/archetype-resources/src/test/java/AppTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LAB4/src/main/resources/config.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_12.04.25/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_12.04.25/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_12.04.25/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_12.04.25/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_12.04.25/src/main/java/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_12.04.25/src/main/resources/META-INF/maven/archetype.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_12.04.25/src/main/resources/archetype-resources/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_12.04.25/src/main/resources/archetype-resources/src/main/java/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Task_12.04.25/src/main/resources/archetype-resources/src/test/java/AppTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/lab1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB1/lab1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/lab1/game_logs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB1/lab1/game_logs.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/lab1/main/java/src/BullsAndCows.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/out/production/main/src/BullsAndCows.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/out/production/main/src/GameLogs.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/out/production/main/src/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/out/production/main/src/NumberGenerator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/out/production/main/src/Result.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/out/production/main/src/Validator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/out/test/lab1/src/java/BullsAndCowsTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB1/target/classes/src/BullsAndCows.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB1/target/classes/src/BullsAndCows.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB2/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB2/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB2/src/test/java/src/Tests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ArtiomVlasov&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ArtiomVlasov/JavaLabs.git&quot;,
+    &quot;accountId&quot;: &quot;8cfa0717-4e49-4a59-985d-6139879c894b&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2vMM8gfRTWfn9MCqQ9TvJSOVV3X" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "lab4",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/archi/IdeaProjects/JavaLabs/LAB3",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1e58f3cf-bd16-4cc0-af7e-43cfb2344257" name="Changes" comment="" />
+      <created>1745228897517</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1745228897517</updated>
+      <workItem from="1746432136553" duration="27000" />
+    </task>
+    <task id="LOCAL-00001" summary="start. Add class GameObject and some extended classes. Add PlayerController and PlayerModel.">
+      <option name="closed" value="true" />
+      <created>1745229175805</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1745229175805</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add pom.xml">
+      <option name="closed" value="true" />
+      <created>1745229258931</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1745229258931</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="start. Add class GameObject and some extended classes. Add PlayerController and PlayerModel." />
+    <MESSAGE value="add pom.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="add pom.xml" />
+  </component>
+</project>
