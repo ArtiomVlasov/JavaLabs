@@ -7,6 +7,7 @@ import java.awt.*;
 public class MainMenu extends JPanel {
     private JButton player1Button;
     private JButton player2Button;
+    private JButton exitButton;
     private static final Color BACKGROUND_COLOR = Color.BLACK;
     private static final Color TEXT_COLOR = Color.GREEN;
     private static final Font TITLE_FONT = new Font("Helvetica", Font.BOLD, 36);
@@ -17,14 +18,10 @@ public class MainMenu extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(BACKGROUND_COLOR);
         
-        // Initialize sound manager and start background music
         soundManager = SoundManager.getInstance();
-        soundManager.playBackgroundMusic();
         
-        // Add some padding at the top
         add(Box.createVerticalStrut(50));
         
-        // Title
         JLabel titleLabel = new JLabel("SPACE INVADERS");
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setForeground(TEXT_COLOR);
@@ -33,23 +30,31 @@ public class MainMenu extends JPanel {
         
         add(Box.createVerticalStrut(50));
         
-        // First player button
-        player1Button = createButton("FIRST PLAYER", () -> {
-            soundManager.stopBackgroundMusic(); // Stop menu music before starting game
-            firstPlayerAction.run();
+        player1Button = createButton("FIRST PLAYER", () -> {firstPlayerAction.run();
         });
         add(player1Button);
         
         add(Box.createVerticalStrut(20));
         
-        // Second player button
         player2Button = createButton("SECOND PLAYER", () -> {
-            soundManager.stopBackgroundMusic(); // Stop menu music before starting game
             secondPlayerAction.run();
         });
         add(player2Button);
         
-        add(Box.createVerticalGlue()); // Center everything vertically
+        add(Box.createVerticalStrut(20));
+        
+        JButton highScoresButton = createButton("HIGH SCORES", () -> {
+        });
+        add(highScoresButton);
+        
+        add(Box.createVerticalStrut(20));
+        
+        exitButton = createButton("EXIT", () -> {
+            System.exit(0);
+        });
+        add(exitButton);
+        
+        add(Box.createVerticalGlue());
     }
 
     private JButton createButton(String text, Runnable action) {

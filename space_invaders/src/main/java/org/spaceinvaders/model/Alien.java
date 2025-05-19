@@ -1,13 +1,16 @@
 package org.spaceinvaders.model;
 
 import javax.imageio.ImageIO;
-import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Represents an alien enemy in Space Invaders
  */
-public class Alien extends GameObject {
+
+//FIXME создать класс командир который отслежовает состояние всех в его строке, решает что нужно спуститься вниз
+public class Alien extends GameObject implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final float BASE_SPEED = 4.0f;
     private int points;
     private int row;
@@ -16,9 +19,9 @@ public class Alien extends GameObject {
     private float speedMultiplier;
 
     public enum AlienType {
-        FIRST(10, "first_type_enemy.png"),
-        SECOND(20, "second_type_enemy.png"),
-        THIRD(30, "third_type_enemy.png");
+        FIRST(10, "/images/first_type_enemy.png"),
+        SECOND(20, "/images/second_type_enemy.png"),
+        THIRD(30, "/images/third_type_enemy.png");
 
         private final int points;
         private final String imageFile;
@@ -40,7 +43,6 @@ public class Alien extends GameObject {
         this.row = row;
         this.speedMultiplier = 2.0f;
         
-        // Determine alien type based on row
         if (row < 2) {
             this.type = AlienType.FIRST;
         } else if (row < 4) {
@@ -56,9 +58,9 @@ public class Alien extends GameObject {
 
     private void initAlien() {
         try {
-            image = ImageIO.read(new File("src/main/java/images/" + type.imageFile));
+            image = ImageIO.read(getClass().getResourceAsStream(type.imageFile));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error loading alien image: " + e.getMessage());
         }
     }
 
@@ -84,6 +86,8 @@ public class Alien extends GameObject {
      * Creates a shot from the alien's position
      * @return A new shot object
      */
+
+    //FIXME убрать shoot в update, логику стрельбы внести в класс alien
     public Shot shoot() {
         return new Shot(x + width / 2, y + height, true);
     }
@@ -96,7 +100,6 @@ public class Alien extends GameObject {
         this.speedMultiplier = multiplier;
     }
 
-    // Getters
     public int getPoints() { return points; }
     public int getRow() { return row; }
     public boolean isMovingRight() { return movingRight; }

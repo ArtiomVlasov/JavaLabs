@@ -1,13 +1,16 @@
 package org.spaceinvaders.model;
 
 import javax.imageio.ImageIO;
-import java.io.File;
+import java.awt.*;
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Represents a shot fired by either the player or aliens
  */
-public class Shot extends GameObject {
+//FIXME проверку коллизии добавить в сам класс пули
+public class Shot extends GameObject implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final int SHOT_SPEED = 4;
     private boolean isAlienShot;
 
@@ -25,8 +28,9 @@ public class Shot extends GameObject {
 
     private void initShot() {
         try {
-            image = ImageIO.read(new File("src/main/java/images/shot.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/images/shot.png"));
         } catch (IOException e) {
+            System.err.println("Error loading shot image: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -39,8 +43,7 @@ public class Shot extends GameObject {
             y -= SHOT_SPEED;
         }
 
-        // Set invisible when shot goes off screen
-        if (y < 0 || y > 1080) {  // Using standard full HD height
+        if (y < 0 || y > (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()) {
             visible = false;
         }
     }

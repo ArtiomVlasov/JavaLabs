@@ -19,7 +19,7 @@ public class GameFrame extends JFrame {
     private JPanel cardPanel;
     private Timer gameTimer;
     private KeyAdapter keyAdapter;
-    private static final int DELAY = 20;  // ~50 FPS
+    private static final int DELAY = 20;
     private static final String MENU_CARD = "Menu";
     private static final String GAME_CARD = "Game";
 
@@ -29,10 +29,9 @@ public class GameFrame extends JFrame {
     public GameFrame() {
         cardPanel = new JPanel(new CardLayout());
 
-        // Create main menu
         mainMenu = new MainMenu(
-                () -> startGame(),  // Player 1 action
-                () -> startGame()    // Player 2 action
+                () -> startGame(),
+                () -> startGame()
         );
 
         cardPanel.add(mainMenu, MENU_CARD);
@@ -40,37 +39,27 @@ public class GameFrame extends JFrame {
 
         setTitle("Space Invaders");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setResizable(true);  // Allow resizing for full screen
+        setResizable(true);
 
-        // Set up full screen
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
     }
 
     private void startGame() {
-        // Create game components
         model = new GameModel();
-        gamePanel = new GamePanel(model);
+        gamePanel = new GamePanel(model, this::returnToMenu, this);
         controller = new GameController(model);
 
-        // Set up restart button
         JButton restartButton = gamePanel.getRestartButton();
         restartButton.addActionListener(e -> {
             restartGame();
-            requestFocus(); // Return focus to frame after button click
+            requestFocus();
         });
 
-        // Position restart button
-        gamePanel.setLayout(null);  // Use absolute positioning
+        gamePanel.setLayout(null);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         restartButton.setBounds(screenSize.width/2 - 50, screenSize.height/2 + 50, 100, 40);
 
-        // Remove old key listener if exists
-        if (keyAdapter != null) {
-            removeKeyListener(keyAdapter);
-        }
-
-        // Create and add new key listener
         keyAdapter = new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -87,28 +76,28 @@ public class GameFrame extends JFrame {
         };
         addKeyListener(keyAdapter);
         
-        // Add game panel to card layout
         cardPanel.add(gamePanel, GAME_CARD);
         
-        // Switch to game panel
         CardLayout cl = (CardLayout) cardPanel.getLayout();
         cl.show(cardPanel, GAME_CARD);
         
-        // Start game loop
+        startGameTimer();
+        requestFocus();
+        setFocusable(true);
+    }
+
+    private void startGameTimer() {
         if (gameTimer != null) {
             gameTimer.stop();
         }
         gameTimer = new Timer(DELAY, e -> {
             model.update();
+            controller.handleAlienShooting();
             controller.checkCollisions();
             gamePanel.repaint();
-            restartButton.setVisible(model.isGameOver());
+            gamePanel.getRestartButton().setVisible(model.isGameOver());
         });
         gameTimer.start();
-
-        // Ensure focus is set correctly
-        requestFocus();
-        setFocusable(true);
     }
 
     private void restartGame() {
@@ -116,47 +105,59 @@ public class GameFrame extends JFrame {
             gameTimer.stop();
         }
         
-        // Clean up old game state
         if (model != null) {
             model.cleanup();
         }
         
-        // Create new game components
         model = new GameModel();
         controller = new GameController(model);
         
-        // Update GamePanel with new model
         gamePanel.setModel(model);
+        startGameTimer();
+        requestFocus();
+    }
+
+    public void reloadGameState(GameModel loadedModel) {
+        if (gameTimer != null) {
+            gameTimer.stop();
+        }
         
-        // Start game timer
-        gameTimer = new Timer(DELAY, e -> {
-            model.update();
-            controller.checkCollisions();
-            gamePanel.repaint();
-            gamePanel.getRestartButton().setVisible(model.isGameOver());
-        });
-        gameTimer.start();
+        if (model != null) {
+            model.cleanup();
+        }
         
+        model = loadedModel;
+        controller = new GameController(model);
+        
+        gamePanel.setModel(model);
+        startGameTimer();
         requestFocus();
     }
 
     private void returnToMenu() {
         if (gameTimer != null) {
             gameTimer.stop();
+            gameTimer = null;
         }
         
-        // Clean up sounds
+        if (keyAdapter != null) {
+            removeKeyListener(keyAdapter);
+            keyAdapter = null;
+        }
+        
         if (model != null) {
             model.cleanup();
+            model = null;
+        }
+        
+        if (gamePanel != null) {
+            cardPanel.remove(gamePanel);
+            gamePanel = null;
         }
         
         CardLayout cl = (CardLayout) cardPanel.getLayout();
         cl.show(cardPanel, MENU_CARD);
         
-        // Remove game panel to free resources
-        cardPanel.remove(gamePanel);
-        
-        // Ensure focus is set correctly
         requestFocus();
         setFocusable(true);
     }

@@ -3,6 +3,8 @@ package org.spaceinvaders.controller;
 import org.spaceinvaders.model.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -14,6 +16,7 @@ public class GameController {
     private boolean rightPressed;
     private static final int ALIENS_IN_ROW = 8;
     private static final int ALIENS_IN_COLUMN = 5;
+    private Random random = new Random();
 
     /**
      * Creates a new game controller
@@ -34,26 +37,21 @@ public class GameController {
         model.setWalls(new ArrayList<>());
         model.setScore(0);
         model.setGameOver(false);
-        
-        // Calculate starting position to center aliens horizontally
+
         int startX = (model.getBoardWidth() - ALIENS_IN_ROW) / 2;
-        
-        // Create alien formation with different types
-        // First two rows - type 1 (bottom)
+
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < ALIENS_IN_ROW; j++) {
                 model.getAliens().add(new Alien(startX + j * 80, 120 + (ALIENS_IN_COLUMN - 1 - i) * 60, i));
             }
         }
-        
-        // Next two rows - type 2 (middle)
+
         for (int i = 2; i < 4; i++) {
             for (int j = 0; j < ALIENS_IN_ROW; j++) {
                 model.getAliens().add(new Alien(startX + j * 80, 120 + (ALIENS_IN_COLUMN - 1 - i) * 60, i));
             }
         }
-        
-        // Last row - type 3 (top)
+
         for (int j = 0; j < ALIENS_IN_ROW; j++) {
             model.getAliens().add(new Alien(startX + j * 80, 120, 4));
         }
@@ -62,9 +60,8 @@ public class GameController {
     }
 
     private void createWalls() {
-        int wallY = model.getBoardHeight() - 250;  // Higher wall position
-        
-        // Calculate wall positions to be evenly spaced
+        int wallY = model.getBoardHeight() - 250;
+
         int wallWidth = 16 * 6;
         int totalWidth = 4 * wallWidth;
         int spacing = (model.getBoardWidth() - totalWidth) / 5;
@@ -88,9 +85,7 @@ public class GameController {
     }
 
     public void checkCollisions() {
-        // Check player shots hitting aliens or walls
         for (Shot shot : model.getPlayer().getShots()) {
-            // Check aliens
             for (Alien alien : model.getAliens()) {
                 if (shot.getBounds().intersects(alien.getBounds())) {
                     shot.setVisible(false);
@@ -102,7 +97,6 @@ public class GameController {
                     break;
                 }
             }
-            // Check walls
             for (WallPiece wall : model.getWalls()) {
                 if (shot.getBounds().intersects(wall.getBounds())) {
                     shot.setVisible(false);
@@ -112,9 +106,7 @@ public class GameController {
             }
         }
 
-        // Check alien shots hitting player or walls
         for (Shot shot : model.getAlienShots()) {
-            // Check player
             if (shot.getBounds().intersects(model.getPlayer().getBounds())) {
                 shot.setVisible(false);
                 model.getPlayer().die();
@@ -122,8 +114,7 @@ public class GameController {
                     model.setGameOver(true);
                 }
             }
-            
-            // Check walls
+
             for (WallPiece wall : model.getWalls()) {
                 if (shot.getBounds().intersects(wall.getBounds())) {
                     shot.setVisible(false);
@@ -155,16 +146,7 @@ public class GameController {
                     model.playerShoot();
                 }
                 break;
-            case KeyEvent.VK_R:
-                if (model.isGameOver()) {
-                    // Clean up old model
-                    model.cleanup();
-                    // Reset game
-                    initGame();
-                }
-                break;
             case KeyEvent.VK_M:
-                // Toggle mute
                 model.getSoundManager().toggleMute();
                 break;
         }
@@ -196,6 +178,46 @@ public class GameController {
             model.getPlayer().moveRight();
         } else {
             model.getPlayer().stop();
+        }
+    }
+
+    /**
+     * Handles alien shooting logic
+     */
+    public void handleAlienShooting() {
+        if (model.getAliens().isEmpty() || model.getAlienShots().size() >= model.getMaxAlienShots()) {
+            return;
+        }
+
+        List<Alien> potentialShooters = new ArrayList<>();
+        for (Alien alien : model.getAliens()) {
+            boolean isLowest = true;
+            int alienX = alien.getX();
+            for (Alien other : model.getAliens()) {
+                if (other != alien && 
+                    Math.abs(other.getX() - alienX) < 30 && other.getY() > alien.getY()) {
+                    isLowest = false;
+                    break;
+                }
+            }
+            if (isLowest) {
+                potentialShooters.add(alien);
+            }
+        }
+
+        if (!potentialShooters.isEmpty()) {
+            potentialShooters.sort((a1, a2) -> {
+                int d1 = Math.abs(a1.getX() - model.getPlayer().getX());
+                int d2 = Math.abs(a2.getX() - model.getPlayer().getX());
+                return Integer.compare(d1, d2);
+            });
+
+            int shooterIndex = random.nextInt(potentialShooters.size());
+
+            if (random.nextInt(100) < model.getShotChance()) {
+                Alien shooter = potentialShooters.get(shooterIndex);
+                model.getAlienShots().add(shooter.shoot());
+            }
         }
     }
 }

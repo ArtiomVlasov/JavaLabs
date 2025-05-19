@@ -2,17 +2,19 @@ package org.spaceinvaders.model;
 
 import java.awt.Rectangle;
 import java.awt.Image;
+import java.io.Serializable;
 
 /**
  * Base class for all game objects in Space Invaders
  */
-public abstract class GameObject {
+public abstract class GameObject implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected int x;
     protected int y;
     protected int width;
     protected int height;
     protected boolean visible;
-    protected Image image;
+    protected transient Image image;
 
     /**
      * Creates a new game object
@@ -42,7 +44,6 @@ public abstract class GameObject {
         return new Rectangle(x, y, width, height);
     }
 
-    // Getters and setters
     public int getX() { return x; }
     public void setX(int x) { this.x = x; }
     public int getY() { return y; }
@@ -52,5 +53,4 @@ public abstract class GameObject {
     public boolean isVisible() { return visible; }
     public void setVisible(boolean visible) { this.visible = visible; }
     public Image getImage() { return image; }
-    public void setImage(Image image) { this.image = image; }
 } 

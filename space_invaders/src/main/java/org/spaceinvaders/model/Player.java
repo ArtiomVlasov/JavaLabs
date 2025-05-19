@@ -2,23 +2,24 @@ package org.spaceinvaders.model;
 
 import javax.imageio.ImageIO;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.Serializable;
 
 /**
  * Represents the player's ship in Space Invaders
  */
-public class Player extends GameObject {
+public class Player extends GameObject implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int dx;
     private int lives;
     private List<Shot> shots;
     private static final int PLAYER_SPEED = 3;
     private static final int INITIAL_LIVES = 3;
-    private static final int SHOOT_COOLDOWN = 750; // Cooldown in milliseconds
+    private static final int SHOOT_COOLDOWN = 750;
     private long lastShotTime;
 
     /**
@@ -36,8 +37,9 @@ public class Player extends GameObject {
 
     private void initPlayer() {
         try {
-            image = ImageIO.read(new File("src/main/java/images/player.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/images/player.png"));
         } catch (IOException e) {
+            System.err.println("Error loading player image: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -46,7 +48,6 @@ public class Player extends GameObject {
     public void update() {
         x += dx;
 
-        // Keep player within screen bounds
         if (x < 0) {
             x = 0;
         }
@@ -98,7 +99,6 @@ public class Player extends GameObject {
         lives--;
     }
 
-    // Getters
     public List<Shot> getShots() { return shots; }
     public int getLives() { return lives; }
 } 
