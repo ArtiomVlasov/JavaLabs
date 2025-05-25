@@ -233,7 +233,7 @@ public class ClientHandlerXML extends ClientHandler {
             message.setTextContent(msg);
             error.appendChild(message);
             doc.appendChild(error);
-            sendXml(doc);
+            messageQueue.put(doc);
         } catch (Exception e) {server.log("[ERROR] Cannot send error XML: " + e.getMessage());}
     }
 
@@ -246,7 +246,7 @@ public class ClientHandlerXML extends ClientHandler {
             message.setTextContent(msg);
             success.appendChild(message);
             doc.appendChild(success);
-            sendXml(doc);
+            messageQueue.put(doc);
         } catch (Exception e) {server.log("[ERROR] Cannot send success XML: " + e.getMessage());}
     }
 
@@ -262,7 +262,7 @@ public class ClientHandlerXML extends ClientHandler {
             success.appendChild(message);
             success.appendChild(sess);
             doc.appendChild(success);
-            sendXml(doc);
+            messageQueue.put(doc);
         } catch (Exception e) {server.log("[ERROR] Cannot send session XML: " + e.getMessage());}
     }
 
@@ -286,7 +286,7 @@ public class ClientHandlerXML extends ClientHandler {
 
             success.appendChild(list);
             doc.appendChild(success);
-            sendXml(doc);
+            messageQueue.put(doc);
         } catch (Exception e) {sendError("Failed to send user list");}
     }
 }

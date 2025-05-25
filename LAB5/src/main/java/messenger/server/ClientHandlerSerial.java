@@ -1,8 +1,12 @@
 package messenger.server;
 
 import messenger.common.Message;
+import org.w3c.dom.Document;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,11 +16,31 @@ public class ClientHandlerSerial extends ClientHandler {
     private ObjectOutputStream out;
     private volatile boolean running = true;
     private long lastPingTime = System.currentTimeMillis();
+    private final BlockingQueue<Message> messageQueue = new LinkedBlockingQueue<>();
+
 
     public ClientHandlerSerial(Socket socket, Server server) throws IOException {
         super(socket, server);
         this.out = new ObjectOutputStream(socket.getOutputStream());
         this.in = new ObjectInputStream(socket.getInputStream());
+
+        startMessageProcessor();
+    }
+
+    private void startMessageProcessor() {
+        Thread.startVirtualThread(() -> {
+            while (running) {
+                try {
+                    // Забираем сообщение из очереди
+                    Message message = messageQueue.take();
+                    sendEvent(message);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                } catch (Exception e) {
+                    server.log("[ERROR] Failed to send message: " + e.getMessage());
+                }
+            }
+        });
     }
 
     @Override
@@ -137,54 +161,78 @@ public class ClientHandlerSerial extends ClientHandler {
 
     @Override
     public void sendUserLoginEvent(String name) {
-        Message event = new Message();
-        event.setType("event");
-        event.setName(name);
-        event.setContent("userlogin");
-        sendEvent(event);
+        try{
+            Message event = new Message();
+            event.setType("event");
+            event.setName(name);
+            event.setContent("userlogin");
+            messageQueue.put(event);
+        }catch (Exception e) {
+            sendError("Failed to send message");
+        }
     }
 
     @Override
     public void sendUserLogoutEvent(String name) {
-        Message event = new Message();
-        event.setType("event");
-        event.setName(name);
-        event.setContent("userlogout");
-        sendEvent(event);
+        try {
+            Message event = new Message();
+            event.setType("event");
+            event.setName(name);
+            event.setContent("userlogout");
+            messageQueue.put(event);
+        }catch (Exception e) {
+            sendError("Failed to send message");
+        }
     }
 
     @Override
     public void sendMessageEvent(String from, String message) {
-        Message event = new Message();
-        event.setType("event");
-        event.setName(from);
-        event.setContent(message);
-        sendEvent(event);
+        try {
+            Message event = new Message();
+            event.setType("event");
+            event.setName(from);
+            event.setContent(message);
+            messageQueue.put(event);
+        } catch (Exception e) {
+            sendError("Failed to send message");
+        }
     }
 
     @Override
     public void sendError(String msg) {
-        Message response = new Message();
-        response.setType("error");
-        response.setContent(msg);
-        sendEvent(response);
+        try{
+            Message response = new Message();
+            response.setType("error");
+            response.setContent(msg);
+            messageQueue.put(response);
+        }catch (Exception e) {
+            sendError("Failed to send message");
+        }
     }
 
     @Override
     public void sendSuccess(String msg) {
-        Message response = new Message();
-        response.setType("success");
-        response.setContent(msg);
-        sendEvent(response);
+        try{
+            Message response = new Message();
+            response.setType("success");
+            response.setContent(msg);
+            messageQueue.put(response);
+        }catch (Exception e) {
+            sendError("Failed to send message");
+        }
     }
 
     @Override
     public void sendSuccess(String msg, String sessionId) {
-        Message response = new Message();
-        response.setType("success");
-        response.setContent(msg);
-        response.setSessionId(sessionId);
-        sendEvent(response);
+        try{
+            Message response = new Message();
+            response.setType("success");
+            response.setContent(msg);
+            response.setSessionId(sessionId);
+            messageQueue.put(response);
+        }catch (Exception e) {
+            sendError("Failed to send message");
+        }
     }
 
     @Override
