@@ -2,7 +2,9 @@ package src.gui;
 
 import src.context.*;
 import src.commands.*;
+import src.factory.CommandsFactory;
 import src.logs.CalculatorLogger;
+
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -11,11 +13,16 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import src.logs.CalculatorLogger;
+
 
 public class CalculatorGui {
+    private static final Logger logger = CalculatorLogger.setupLogger(CalculatorGui.class.getName());
+
     class VariableTableModel extends AbstractTableModel {
         private final Map<String, Double> variables;
         private final String[] columnNames = {"Variable", "Value"};
+
 
         public VariableTableModel(Map<String, Double> variables) {
             this.variables = variables;
@@ -55,9 +62,18 @@ public class CalculatorGui {
         }
     }
 
+    private void addCommand( Map<String, Command> commandMap,  CommandsFactory factory, String commandName){
+        try {
+            commandMap.put(commandName, factory.createCommand(commandName));
+            logger.info("Commands "+ commandName+" loaded successfully");
 
+        } catch (Exception e) {
+            logger.severe("Failed to initialize commands: " + e.getMessage());
+            throw new IllegalArgumentException("Unknown command: " + commandName);
+        }
+    }
 
-    public void createAndShowGUI(Context context, Map<String, Command> factory, Logger logger) {
+    public void createAndShowGUI(Context context, Map<String, Command> commandMap, CommandsFactory factory) {
         logger.info("Creating GUI components...");
         JFrame frame = new JFrame("Stack Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -124,12 +140,18 @@ public class CalculatorGui {
             context.pushToStack(context.getHistory(), context.getHistoryListener(), commandName);
 
             String[] parts = commandName.split(" ");
-            Command command = factory.get(parts[0].toLowerCase());
+            Command command = commandMap.get(parts[0].toLowerCase());
 
             if (command == null) {
-                logger.warning("Unknown command: " + parts[0]);
-                JOptionPane.showMessageDialog(frame, "Unknown command!", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
+                try {
+                    addCommand(commandMap, factory, parts[0]);
+                    command = commandMap.get(parts[0].toLowerCase());
+                }catch(IllegalArgumentException exp) {
+                    logger.warning("Unknown command: " + parts[0]);
+                    JOptionPane.showMessageDialog(frame, "Unknown command!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            if (command != null){
                 try {
                     if (parts[0].equalsIgnoreCase("define")) {
                         command.execute(context, parts[1], parts[2]);
@@ -149,7 +171,7 @@ public class CalculatorGui {
 
         saveButton.addActionListener(e -> {
             try {
-                context.saveState("/home/archi/IdeaProjects/JavaLabs/LAB2/src/main/java/src/gui/saves");
+                context.saveState("saves");
                 logger.info("State saved successfully.");
                 JOptionPane.showMessageDialog(frame, "State saved successfully.", "State", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
@@ -160,7 +182,7 @@ public class CalculatorGui {
 
         loadButton.addActionListener(e -> {
             try {
-                context.loadState("/home/archi/IdeaProjects/JavaLabs/LAB2/src/main/java/src/gui/saves");
+                context.loadState("saves");
                 tableModel.fireTableDataChanged();
                 logger.info("State loaded successfully.");
                 JOptionPane.showMessageDialog(frame, "State loaded successfully.", "State", JOptionPane.INFORMATION_MESSAGE);

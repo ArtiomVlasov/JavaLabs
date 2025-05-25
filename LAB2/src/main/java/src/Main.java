@@ -3,6 +3,7 @@ package src;
 import src.commands.*;
 import src.context.Context;
 import src.gui.CalculatorGui;
+import src.factory.CommandsFactory;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -17,16 +18,11 @@ public class Main {
     public static void main(String[] args) {
         logger.info("Launching Stack Calculator GUI...");
         Context context = new Context();
-        Map<String, Command> factory = new HashMap<>();
-        factory.put("push", new PushCommand());
-        factory.put("define", new DefineCommand());
-        factory.put("/", new DivisionCommand());
-        factory.put("-", new MinusCommand());
-        factory.put("+", new PlusCommand());
-        factory.put("*", new MultiplicationCommand());
-        factory.put("pop", new PopCommand());
-        factory.put("sqrt", new SqrtCommand());
-        SwingUtilities.invokeLater(() -> new CalculatorGui().createAndShowGUI(context, factory, logger));
-        //FIXME class передавать в фабрику и фабрику сделать человеческую, и чтобы команды создавались по мере надобности.
+        
+        // Create command factory and load commands
+        CommandsFactory factory = new CommandsFactory();
+        Map<String, Command> commandMap = new HashMap<>();
+
+        SwingUtilities.invokeLater(() -> new CalculatorGui().createAndShowGUI(context, commandMap, factory));
     }
 }
