@@ -5,7 +5,7 @@ import src.context.Context;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
-@CommandInfo(name = "MINUS")
+@CommandInfo(name = "-")
 public class MinusCommand implements Command {
     @Override
     public void execute(Context context, String... args) {

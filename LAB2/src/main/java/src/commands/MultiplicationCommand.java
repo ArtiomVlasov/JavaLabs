@@ -5,7 +5,7 @@ import src.context.Context;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
-@CommandInfo(name = "MULTIPLICATION")
+@CommandInfo(name = "*")
 public class MultiplicationCommand implements Command {
     @Override
     public void execute(Context context, String... args) {
