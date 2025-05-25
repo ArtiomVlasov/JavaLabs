@@ -5,42 +5,24 @@ import java.net.Socket;
 import java.util.Properties;
 import messenger.common.Message;
 
-public class SerialClientHandler {
+public class SerialClientHandler extends ClientHandler {
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private String sessionId;
-    private volatile boolean running = true;
-    private static final String CONFIG_FILE = "/config.properties";
-    private static final Properties properties = new Properties();
 
-    static {
-        try (InputStream input = SerialClientHandler.class.getResourceAsStream(CONFIG_FILE)) {
-            if (input == null) {
-                throw new RuntimeException("Unable to find " + CONFIG_FILE);
-            }
-            properties.load(input);
-        } catch (IOException e) {
-            throw new RuntimeException("Error loading configuration", e);
-        }
-    }
-    //FIXME написать поддержку через ui выбор этого протокола
 
-    public static String getServerIp() {
-        return properties.getProperty("server.ip");
-    }
-
-    public static int getServerPort() {
-        return Integer.parseInt(properties.getProperty("server.port"));
-    }
-
+    @Override
     public void connect() throws IOException {
         Socket socket = new Socket(getServerIp(), getServerPort());
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+        dos.writeUTF("Serialisation");
+        dos.flush();
+        
         this.out = new ObjectOutputStream(socket.getOutputStream());
+        out.flush(); // Flush the header before creating ObjectInputStream
         this.in = new ObjectInputStream(socket.getInputStream());
-        out.writeUTF("SERIAL");
-        out.flush();
     }
-
+    @Override
     public String login(String nickname, String password) throws Exception {
         Message request = new Message();
         request.setType("login");
@@ -49,7 +31,7 @@ public class SerialClientHandler {
         request.setClientType("SerialClient");
 
         sendMessage(request);
-        Message response = receiveMessage();
+        Message response = receive();
 
         if (response.getType().equals("error")) {
             throw new IOException(response.getContent());
@@ -59,7 +41,7 @@ public class SerialClientHandler {
         }
         throw new IOException("Unexpected response");
     }
-
+    @Override
     public void signup(String nickname, String password) throws Exception {
         Message request = new Message();
         request.setType("signup");
@@ -68,13 +50,13 @@ public class SerialClientHandler {
         request.setClientType("SerialClient");
 
         sendMessage(request);
-        Message response = receiveMessage();
+        Message response = receive();
 
         if (response.getType().equals("error")) {
             throw new IOException(response.getContent());
         }
     }
-
+    @Override
     public void sendMessage(String content) throws IOException {
         Message message = new Message();
         message.setType("message");
@@ -82,29 +64,29 @@ public class SerialClientHandler {
         message.setSessionId(sessionId);
         sendMessage(message);
     }
-
+    @Override
     public void sendPing() throws IOException {
         Message message = new Message();
         message.setType("ping");
         message.setSessionId(sessionId);
         sendMessage(message);
     }
-
+    @Override
     public void sendLogout() throws IOException {
         Message message = new Message();
         message.setType("logout");
         message.setSessionId(sessionId);
         sendMessage(message);
     }
-
+    @Override
     public void sendListRequest() throws IOException {
         Message message = new Message();
         message.setType("list");
         message.setSessionId(sessionId);
         sendMessage(message);
     }
-
-    public Message receiveMessage() throws Exception {
+    @Override
+    public Message receive() throws Exception {
         return (Message) in.readObject();
     }
 
@@ -113,8 +95,9 @@ public class SerialClientHandler {
         out.flush();
     }
 
+    @Override
     public void close() {
-        running = false;
+        super.close();
         try {
             if (in != null) in.close();
             if (out != null) out.close();

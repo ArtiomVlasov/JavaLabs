@@ -7,10 +7,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+
+import messenger.common.Message;
 import org.w3c.dom.*;
 
 public class ClientUI {
-    private XMLClientHandler client;
+    private ClientHandler client;
     private volatile boolean running = true;
 
     private JFrame loginFrame;
@@ -20,19 +22,15 @@ public class ClientUI {
     private JTextField messageField;
     private JTextField nicknameField;
     private JPasswordField passwordField;
+    private JToggleButton ProtocolTumblr;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new ClientUI().start());
     }
 
     public void start() {
-        try {
-            client = new XMLClientHandler();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "[ERROR] Failed to initialize XML parser: " + e.getMessage());
-            return;
-        }
         createLoginFrame();
+
     }
 
     private void createLoginFrame() {
@@ -46,6 +44,21 @@ public class ClientUI {
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
+        ProtocolTumblr = new JToggleButton("Serialisation");
+        ProtocolTumblr.setMaximumSize(new Dimension(150, 40));
+        ProtocolTumblr.setFont(new Font("Arial", Font.PLAIN, 18));
+        ProtocolTumblr.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        ProtocolTumblr.addActionListener(e -> {
+            if (ProtocolTumblr.isSelected()) {
+                ProtocolTumblr.setText("Serialisation");
+                System.out.println("Protocol switched to Serialisation");
+            } else {
+                ProtocolTumblr.setText("XML");
+                System.out.println("Protocol switched to XML");
+            }
+        });
 
         JLabel title = new JLabel("Telegram killer", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 28));
@@ -94,11 +107,13 @@ public class ClientUI {
             }
         });
 
+        mainPanel.add(ProtocolTumblr);
         mainPanel.add(title);
         mainPanel.add(Box.createVerticalStrut(20));
         mainPanel.add(nicknameField);
         mainPanel.add(Box.createVerticalStrut(20));
         mainPanel.add(passwordField);
+
         mainPanel.add(Box.createVerticalStrut(40));
         mainPanel.add(loginButton);
         mainPanel.add(Box.createVerticalGlue());
@@ -109,6 +124,7 @@ public class ClientUI {
     }
 
     private void connectAndLogin(String nickname, String password) {
+        setClientHandlerType();
         try {
             client.connect();
             client.login(nickname, password);
@@ -192,39 +208,20 @@ public class ClientUI {
     private void listenForMessages() {
         try {
             while (running) {
-                Document doc = client.receiveXml();
-                if (doc == null) break;
-                Element root = doc.getDocumentElement();
-                SwingUtilities.invokeLater(() -> {
-                    switch (root.getTagName()) {
-                        case "event" -> {
-                            String type = root.getAttribute("name");
-                            switch (type) {
-                                case "userlogin" -> appendToChat("[SYSTEM] " + getText(root, "name") + " joined the chat");
-                                case "userlogout" -> appendToChat("[SYSTEM] " + getText(root, "name") + " left the chat");
-                                case "message" -> {
-                                    String from = getText(root, "name");
-                                    String text = getText(root, "message");
-                                    if (from.equals(nicknameField.getText())) appendToChat("You: " + text);
-                                    else appendToChat(from + ": " + text);
-                                }
-                            }
-                        }
-                        case "success" -> {
-                            if (root.getElementsByTagName("listusers").getLength() > 0) {
-                                appendToChat("Users online:");
-                                NodeList users = root.getElementsByTagName("user");
-                                for (int i = 0; i < users.getLength(); i++) {
-                                    Element user = (Element) users.item(i);
-                                    String name = getText(user, "name");
-                                    String type = getText(user, "type");
-                                    appendToChat(" - " + name + " (" + type + ")");
-                                }
-                            }
-                        }
-                        case "error" -> appendToChat("[ERROR] " + getText(root, "message"));
-                    }
-                });
+                Object message = client.receive(); // Получаем сообщение от клиента
+
+                if (message instanceof Document) {
+                    // Если это XML-документ
+                    Document xmlDocument = (Document) message;
+                    Element root = xmlDocument.getDocumentElement();
+                    handleXmlMessage(root);
+                } else if (message instanceof Message) {
+                    // Если это объект Message
+                    Message serialMessage = (Message) message;
+                    handleSerializedMessage(serialMessage);
+                } else {
+                    throw new IllegalArgumentException("Unknown object type received.");
+                }
             }
         } catch (Exception e) {
             SwingUtilities.invokeLater(() -> {
@@ -233,6 +230,80 @@ public class ClientUI {
                 closeResources();
             });
         }
+    }
+
+    private void handleXmlMessage(Element root) {
+        SwingUtilities.invokeLater(() -> {
+            switch (root.getTagName()) {
+                case "event" -> {
+                    String type = root.getAttribute("name");
+                    switch (type) {
+                        case "userlogin" -> appendToChat("[SYSTEM] " + getText(root, "name") + " joined the chat");
+                        case "userlogout" -> appendToChat("[SYSTEM] " + getText(root, "name") + " left the chat");
+                        case "message" -> {
+                            String from = getText(root, "name");
+                            String text = getText(root, "message");
+                            if (from.equals(nicknameField.getText())) appendToChat("You: " + text);
+                            else appendToChat(from + ": " + text);
+                        }
+                    }
+                }
+                case "success" -> {
+                    if (root.getElementsByTagName("listusers").getLength() > 0) {
+                        appendToChat("Users online:");
+                        NodeList users = root.getElementsByTagName("user");
+                        for (int i = 0; i < users.getLength(); i++) {
+                            Element user = (Element) users.item(i);
+                            String name = getText(user, "name");
+                            String type = getText(user, "type");
+                            appendToChat(" - " + name + " (" + type + ")");
+                        }
+                    }
+                }
+                case "error" -> appendToChat("[ERROR] " + getText(root, "message"));
+            }
+        });
+    }
+
+    private void handleSerializedMessage(Message message) {
+        SwingUtilities.invokeLater(() -> {
+            switch (message.getType()) {
+                case "event" -> {
+                    String from = message.getName();
+                    String content = message.getContent();
+                    // If the content is "userlogin" or "userlogout", it's a user event
+                    if ("userlogin".equals(content)) {
+                        appendToChat("[SYSTEM] " + from + " joined the chat");
+                    } else if ("userlogout".equals(content)) {
+                        appendToChat("[SYSTEM] " + from + " left the chat");
+                    } else {
+                        // Otherwise, it's a chat message
+                        if (from != null && from.equals(nicknameField.getText())) {
+                            appendToChat("You: " + content);
+                        } else if (from != null) {
+                            appendToChat(from + ": " + content);
+                        }
+                    }
+                }
+                case "success" -> {
+                    String c = message.getContent();
+                    if (c != null) {
+                        if (c.contains("listusers")) {
+                            appendToChat("Users online:");
+                            String[] users = c.split("\\n");
+                            for (String user : users) {
+                                if (!user.isEmpty()) {
+                                    appendToChat(" - " + user);
+                                }
+                            }
+                        } else {
+                            appendToChat("[SYSTEM] " + c);
+                        }
+                    }
+                }
+                case "error" -> appendToChat("[ERROR] " + message.getContent());
+            }
+        });
     }
 
     private void startPinger() {
@@ -283,6 +354,7 @@ public class ClientUI {
     }
 
     private void signup(String nickname, String password) {
+        setClientHandlerType();
         try {
             client.connect();
             client.signup(nickname, password);
@@ -290,6 +362,19 @@ public class ClientUI {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Connection error: " + ex.getMessage());
             signupFrame.setVisible(true);
+        }
+    }
+
+    private void setClientHandlerType(){
+        try {
+            if (ProtocolTumblr.getText().equals("XML")) {
+                client = new XMLClientHandler();
+            }
+            else if(ProtocolTumblr.getText().equals("Serialisation")){
+                client = new SerialClientHandler();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "[ERROR] Failed to initialize XML parser: " + e.getMessage());
         }
     }
 
@@ -346,6 +431,21 @@ public class ClientUI {
         signupButton.setFocusPainted(false);
         signupButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
+        ProtocolTumblr = new JToggleButton("XML");
+        ProtocolTumblr.setMaximumSize(new Dimension(150, 40));
+        ProtocolTumblr.setFont(new Font("Arial", Font.PLAIN, 18));
+        ProtocolTumblr.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        ProtocolTumblr.addActionListener(e -> {
+            if (ProtocolTumblr.isSelected()) {
+                ProtocolTumblr.setText("Serialisation");
+                System.out.println("Protocol switched to Serialisation");
+            } else {
+                ProtocolTumblr.setText("XML");
+                System.out.println("Protocol switched to XML");
+            }
+        });
+
         JLabel switchToLogin = new JLabel("I already have an account");
         switchToLogin.setFont(new Font("Arial", Font.PLAIN, 16));
         switchToLogin.setForeground(Color.BLACK);
@@ -368,6 +468,7 @@ public class ClientUI {
             }
         });
 
+        mainPanel.add(ProtocolTumblr);
         mainPanel.add(title);
         mainPanel.add(Box.createVerticalStrut(20));
         mainPanel.add(nicknameField);

@@ -8,47 +8,24 @@ import javax.xml.transform.stream.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Properties;
-import java.io.InputStream;
 
-public class XMLClientHandler {
+public class XMLClientHandler extends ClientHandler {
     private DataInputStream in;
     private DataOutputStream out;
     private final DocumentBuilder builder;
     private String sessionId;
-    private volatile boolean running = true;
-    private static final String CONFIG_FILE = "/config.properties";
-    private static final Properties properties = new Properties();
-
-    static {
-        try (InputStream input = XMLClientHandler.class.getResourceAsStream(CONFIG_FILE)) {
-            if (input == null) {
-                throw new RuntimeException("Unable to find " + CONFIG_FILE);
-            }
-            properties.load(input);
-        } catch (IOException e) {
-            throw new RuntimeException("Error loading configuration", e);
-        }
-    }
-
-    public static String getServerIp() {
-        return properties.getProperty("server.ip");
-    }
-
-    public static int getServerPort() {
-        return Integer.parseInt(properties.getProperty("server.port"));
-    }
 
     public XMLClientHandler() throws Exception {
         this.builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     }
-
+    @Override
     public void connect() throws IOException {
         Socket socket = new Socket(getServerIp(), getServerPort());
         this.in = new DataInputStream(socket.getInputStream());
         this.out = new DataOutputStream(socket.getOutputStream());
         out.writeUTF("XML");
     }
-
+    @Override
     public String login(String nickname, String password) throws Exception {
         Document doc = builder.newDocument();
         Element command = doc.createElement("command");
@@ -67,7 +44,7 @@ public class XMLClientHandler {
         doc.appendChild(command);
         
         sendXml(doc);
-        Document response = receiveXml();
+        Document response = receive();
         Element root = response.getDocumentElement();
         
         if (root.getTagName().equals("error")) {
@@ -78,7 +55,7 @@ public class XMLClientHandler {
         }
         throw new IOException("Unexpected response");
     }
-
+    @Override
     public void signup(String nickname, String password) throws Exception {
         Document doc = builder.newDocument();
         Element command = doc.createElement("command");
@@ -97,14 +74,14 @@ public class XMLClientHandler {
         doc.appendChild(command);
         
         sendXml(doc);
-        Document response = receiveXml();
+        Document response = receive();
         Element root = response.getDocumentElement();
         
         if (root.getTagName().equals("error")) {
             throw new IOException(getText(root, "message"));
         }
     }
-
+    @Override
     public void sendMessage(String message) throws IOException {
         Document doc = builder.newDocument();
         Element command = doc.createElement("command");
@@ -121,7 +98,7 @@ public class XMLClientHandler {
         
         sendXml(doc);
     }
-
+    @Override
     public void sendPing() throws IOException {
         Document doc = builder.newDocument();
         Element command = doc.createElement("command");
@@ -135,7 +112,7 @@ public class XMLClientHandler {
         
         sendXml(doc);
     }
-
+    @Override
     public void sendLogout() throws IOException {
         Document doc = builder.newDocument();
         Element command = doc.createElement("command");
@@ -149,7 +126,7 @@ public class XMLClientHandler {
         
         sendXml(doc);
     }
-
+    @Override
     public void sendListRequest() throws IOException {
         Document doc = builder.newDocument();
         Element command = doc.createElement("command");
@@ -163,8 +140,8 @@ public class XMLClientHandler {
         
         sendXml(doc);
     }
-
-    public Document receiveXml() throws Exception {
+    @Override
+    public Document receive() throws Exception {
         int len = in.readInt();
         byte[] data = new byte[len];
         in.readFully(data);
@@ -195,8 +172,9 @@ public class XMLClientHandler {
         return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
     }
 
+    @Override
     public void close() {
-        running = false;
+        super.close();
         try {
             if (in != null) in.close();
             if (out != null) out.close();
