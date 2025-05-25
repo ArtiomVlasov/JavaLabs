@@ -297,7 +297,7 @@ public class Server {
                 ClientHandler handler;
                 if (protocol.equalsIgnoreCase("XML")) {
                     handler = new ClientHandlerXML(socket, dis, dos, this);
-                } else if (protocol.equalsIgnoreCase("SERIAL")) {
+                } else if (protocol.equalsIgnoreCase("Serialisation")) {
                     handler = new ClientHandlerSerial(socket, this);
                 } else {
                     logger.warning("Unknown protocol: " + protocol);
